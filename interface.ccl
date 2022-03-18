@@ -1,0 +1,3 @@
+# Interface definition for thorn HelloHydro
+implements: HelloHydro
+inherits: HydroBase, Boundary, TmunuBase, ADMBase

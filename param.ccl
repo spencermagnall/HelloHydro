@@ -1,0 +1,13 @@
+# Parameter definitions for thorn HelloHydro
+keyword bound "Which boundary condition to use - FIXME"
+ {
+   "flat"    :: "Zero order extrapolation"
+   "none"    :: "None"
+   "static"  :: "Static, no longer supported"
+   "scalar"  :: "Constant"
+ } "none"
+shares: HydroBase
+EXTENDS KEYWORD evolution_method ""
+{
+    "HelloHydro" :: "Use HelloHydro to evolve the hydro variables"
+}

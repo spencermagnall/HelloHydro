@@ -1,0 +1,27 @@
+# Schedule definitions for thorn HelloHydro
+
+# What is the correct schedule for this to work? HydroBase something??
+schedule HelloHydro in HydroBase_RHS
+{
+    LANG: Fortran
+    STORAGE: HydroBase::rho[1]
+    SYNC: HydroBase::rho
+    READS: HydroBase::rho(everywhere)
+    WRITES: HydroBase::rho(everywhere)
+} "Generate new density"
+
+schedule HelloHydro_Tmunu in AddToTmunu  
+{
+    LANG: Fortran
+    WRITES: TmunuBase::eTtt(everywhere)
+    
+    
+}"Add the primative variable contributions to the stress energy tensor"
+
+#schedule HelloHydro_init in HydroBase_Initial after FLRW_NoPerturb
+#{
+#    LANG: Fortran 
+#
+#}"Set rho to 0"
+#STORAGE: ADMBase::metric[3], ADMBase::curv[3]
+#STORAGE: ADMBase::lapse[3]
