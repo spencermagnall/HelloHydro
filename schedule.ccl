@@ -4,12 +4,16 @@
 schedule HelloHydro in HydroBase_RHS
 {
     LANG: Fortran
-    STORAGE: HydroBase::rho[1]
+    STORAGE: HydroBase::rho[3]
     SYNC: HydroBase::rho
     READS: HydroBase::rho(everywhere)
     WRITES: HydroBase::rho(everywhere)
 } "Generate new density"
 
+schedule calc_press in HydroBase_RHS after HelloHydro
+{
+    LANG: Fortran 
+} "Calculate new pressure from evolved density"
 schedule HelloHydro_Tmunu in AddToTmunu  
 {
     LANG: Fortran
@@ -18,10 +22,15 @@ schedule HelloHydro_Tmunu in AddToTmunu
     
 }"Add the primative variable contributions to the stress energy tensor"
 
-#schedule HelloHydro_init in HydroBase_Initial after FLRW_NoPerturb
-#{
-#    LANG: Fortran 
-#
-#}"Set rho to 0"
+schedule HelloHydro_init in HydroBase_Initial after FLRW_NoPerturb
+{
+    LANG: Fortran 
+
+}"Set pressure from density"
+
+# HelloHydro's variable storage
+#STORAGE: hello_rho[1]
+#STORAGE: hello_press[1]
+
 #STORAGE: ADMBase::metric[3], ADMBase::curv[3]
 #STORAGE: ADMBase::lapse[3]

@@ -1,4 +1,8 @@
 # Parameter definitions for thorn HelloHydro
+STRING phantom_path "Path to phantom dir " 
+ {
+  " " :: "Any string containing the path to phantom dir"
+ } ""
 keyword bound "Which boundary condition to use - FIXME"
  {
    "flat"    :: "Zero order extrapolation"
@@ -6,7 +10,12 @@ keyword bound "Which boundary condition to use - FIXME"
    "static"  :: "Static, no longer supported"
    "scalar"  :: "Constant"
  } "none"
+REAL rho_abs_min "A minimum rho"
+{
+    -1.0: :: ""
+} -1.0
 shares: HydroBase
+USES CCTK_INT timelevels
 EXTENDS KEYWORD evolution_method ""
 {
     "HelloHydro" :: "Use HelloHydro to evolve the hydro variables"
