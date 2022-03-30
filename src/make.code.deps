@@ -1,0 +1,2 @@
+# Add flags for the include flags of phantom
+F90FLAGS+=-I/Users/spencer/phantomET/phantom/build
