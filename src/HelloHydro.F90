@@ -48,6 +48,14 @@ subroutine HelloHydro(CCTK_ARGUMENTS)
     enddo 
     !rho = 13.29
     !call CCTK_INFO(rho)
+    !Phantom stuff here 
+    ! Call evol_step
+    ! What needs to go into evol_step 
+    ! time so that phantom knows when to dump
+    ! dt so that particles can be stepped properly
+    ! Which dt do we use? i.e does it need to be calculated in a seperate    phantom subroutine and passed to ET
+    ! Do we need dtext?, dtnew? What do this variables even do?
+    ! dtnew is the new timestep for the next itteration
 end subroutine HelloHydro
 
 subroutine get_hub(CCTK_ARGUMENTS,hub)

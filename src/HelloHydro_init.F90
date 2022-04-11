@@ -6,8 +6,9 @@
 subroutine HelloHydro_init(CCTK_ARGUMENTS)
     use io,              only:id,master,nprocs,set_io_unit_numbers,die
     use initial,         only:initialise,finalise,startrun,endrun
+    use evolve,          only:evol_init, evol_step
     implicit none
-    character(len=120) :: infile,logfile,evfile,dumpfile,path
+    character(len=500) :: infile,logfile,evfile,dumpfile,path
     integer :: i,j,k,pathstringlength
     real :: poly_k, poly_gamma
     DECLARE_CCTK_ARGUMENTS
@@ -27,10 +28,18 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     ! This is required because CCTK KEYWORDS and STRINGS are passed as c pointers
     ! TODO Catch error for path longer than string length 
     call CCTK_FortranString(pathstringlength,phantom_path,path)
-    infile = trim(path) // "flrw.in"
+    !infile = trim(path) // "flrw.in"
+    infile = 'flrw.in'
+    infile = trim(infile)
     print*, "Phantom path is: ", path 
     print*, "Infile is: ", infile
+    ! Use system call to copy phantom files to simulation directory
+    ! This is a digusting temporary fix
+    call SYSTEM('cp ~/phantomET/phantom/test/flrw* ./')
+    call set_io_unit_numbers
     call startrun(infile,logfile,evfile,dumpfile)
+    call evol_init(infile,logfile,evfile,dumpfile)
+    call evol_step(infile,logfile,evfile,dumpfile)
     print*, "Calling die!!"
     call die
     call CCTK_INFO("Setting pressure from initial density")
