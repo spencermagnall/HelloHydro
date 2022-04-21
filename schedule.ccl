@@ -1,5 +1,4 @@
 # Schedule definitions for thorn HelloHydro
-
 # What is the correct schedule for this to work? HydroBase something??
 schedule HelloHydro in HydroBase_RHS
 {
@@ -27,6 +26,14 @@ schedule HelloHydro_init in HydroBase_Initial after FLRW_NoPerturb
     LANG: Fortran 
 
 }"Set pressure from density"
+
+schedule HelloHydro_metric in HydroBase_RHS before HelloHydro
+{
+    LANG: Fortran
+}"Calculate the components of the 4 metric and its deriv and sqrtdet"
+
+# Storage for metric quantities
+STORAGE: gmunu[1], gmunucon[1], sqrtg[1]
 
 # HelloHydro's variable storage
 #STORAGE: hello_rho[1]

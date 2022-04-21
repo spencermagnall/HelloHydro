@@ -1,3 +1,21 @@
 # Interface definition for thorn HelloHydro
 implements: HelloHydro
 inherits: HydroBase, Boundary, TmunuBase, ADMBase
+private:
+real gmunu type=GF tags='Prolongation="None" tensortypealias="dd_sym" checkpoint="no"'
+{
+    gmunutt,gmunutx,gmunuty,gmunutz
+    gmunuxx,gmunuxy,gmunuxz
+    gmunuyy,gmunuyz
+    gmunuzz
+}
+
+real gmunucon type=GF tags='Prolongation="None"tensortypealias="dd_sym" checkpoint="no"'
+{
+    gmunucontt,gmunucontx,gmunuconty,gmunucontz
+    gmunuconxx,gmunuconxy,gmunuconxz
+    gmunuconyy,gmunuconyz
+    gmunuconzz
+}
+
+real sqrtg type=GF tags='Prolongation="None"tensortypealias="scalar" checkpoint="no"'
