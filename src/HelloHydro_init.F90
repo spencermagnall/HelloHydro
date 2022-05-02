@@ -7,6 +7,7 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     !use io,              only:id,master,nprocs,set_io_unit_numbers,die
     !use initial,         only:initialise,finalise,startrun,endrun
     !use evolve,          only:evol_init, evol_step
+    use einsteintk_utils
     implicit none
     character(len=500) :: infile,logfile,evfile,dumpfile,path
     integer :: i,j,k,pathstringlength
@@ -42,8 +43,14 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     !call evol_step(infile,logfile,evfile,dumpfile)
     !print*, "Calling die!!"
     !call die
+    call CCTK_INFO("Setting up metric grid")
+    call init_etgrid(cctk_gsh(1),cctk_gsh(2),cctk_gsh(3), & 
+    cctk_delta_space(1), cctk_delta_space(2), cctk_delta_space(3), &
+    cctk_origin_space(1),cctk_origin_space(2), cctk_origin_space(3))
+
+
     call CCTK_INFO("Setting pressure from initial density")
-    ! Setup pressure from density using a polytrope
+        ! Setup pressure from density using a polytrope
     do k=1, cctk_lsh(3)
         do j=1, cctk_lsh(2)
             do i=1, cctk_lsh(1)
