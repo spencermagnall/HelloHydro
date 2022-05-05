@@ -35,15 +35,19 @@ subroutine HelloHydro_metric(CCTK_ARGUMENTS)
 end subroutine HelloHydro_metric
 
 subroutine get_4metric(CCTK_ARGUMENTS,i,j,k)
+    !use HelloHydro_metric_utils, only: get_covshift
     implicit none
     DECLARE_CCTK_ARGUMENTS
     DECLARE_CCTK_FUNCTIONS
     DECLARE_CCTK_PARAMETERS
     integer, intent(in) :: i,j,k
     real*8 ::  beta2
+    real*8 :: betacox,betacoy,betacoz ! covariant component of shift 
 
-    ! Get the dot product of the shift vector
-    beta2 = betax(i,j,k)*betax(i,j,k)  + betay(i,j,k)*betay(i,j,k) + betaz(i,j,k)*betaz(i,j,k)
+    ! Get the covariant component of the shift component by lower indices
+    ! Calculate the trace of the shift vector 
+    call get_covshift(i,j,k,betacox,betacoy,betacoz)
+    beta2 = betax(i,j,k)*betacox  + betay(i,j,k)*betacoy + betaz(i,j,k)*betacoz
     !print*, "Beta squared: ", beta2
     !print*, "gmunutt: ", gmunutt
     !print*, "gmunutt: ", gmunutt(i,j,k)

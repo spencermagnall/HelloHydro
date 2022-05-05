@@ -19,3 +19,13 @@ real gmunucon type=GF tags='Prolongation="None"tensortypealias="dd_sym" checkpoi
 }
 
 real sqrtg type=GF tags='Prolongation="None"tensortypealias="scalar" checkpoint="no"'
+
+real spatialderiv type=GF tags='Prolongation="None"tensortypealias="dd_sym" checkpoint="no"'
+{
+    gxxdx, gxxdy, gxxdz
+    gxydx, gxydy, gxydz
+    gxzdx, gxzdy, gxzdz
+    gyydx, gyydy, gyydz
+    gyzdx, gyzdy, gyzdz
+    gzzdx, gzzdy, gzzdz 
+}

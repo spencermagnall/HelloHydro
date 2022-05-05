@@ -1,7 +1,7 @@
 # Schedule definitions for thorn HelloHydro
 # What is the correct schedule for this to work? HydroBase something??
 # Storage for metric quantities
-STORAGE: gmunu[1], gmunucon[1], sqrtg[1]
+STORAGE: gmunu[1], gmunucon[1], sqrtg[1], spatialderiv[1]
 
 schedule HelloHydro in HydroBase_RHS
 {
@@ -36,6 +36,11 @@ schedule HelloHydro_metric in HydroBase_RHS before HelloHydro
     LANG: Fortran
     SYNC: gmunu, gmunucon, sqrtg
 }"Calculate the components of the 4 metric and its deriv and sqrtdet"
+schedule HelloHydro_diff in HydroBase_RHS before HelloHydro
+{
+    LANG: Fortran
+    SYNC: spatialderiv
+}"Calculate the spatial derivatives of the spatial metric" 
 
 schedule HelloHydro_metric_global in HydroBase_RHS before HelloHydro after HelloHydro_metric
 {

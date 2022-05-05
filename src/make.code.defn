@@ -1,7 +1,7 @@
 # Main make.code.defn file for thorn HelloHydro
 
 # Source files in this directory
-SRCS =HelloHydro.F90 HelloHydro_Tmunu.F90 HelloHydro_metric.F90 HelloHydro_init.F90  
+SRCS =HelloHydro.F90 HelloHydro_Tmunu.F90 HelloHydro_diff.F90 HelloHydro_metric.F90 HelloHydro_init.F90 HelloHydro_metric_utils.F90  
 
 # Subdirectories containing source files
 SUBDIRS = 
