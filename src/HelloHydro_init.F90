@@ -7,6 +7,7 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     !use io,              only:id,master,nprocs,set_io_unit_numbers,die
     !use initial,         only:initialise,finalise,startrun,endrun
     !use evolve,          only:evol_init, evol_step
+    use einsteintk_wrapper
     use einsteintk_utils
     implicit none
     character(len=500) :: infile,logfile,evfile,dumpfile,path
@@ -29,11 +30,11 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     ! This is required because CCTK KEYWORDS and STRINGS are passed as c pointers
     ! TODO Catch error for path longer than string length 
     call CCTK_FortranString(pathstringlength,phantom_path,path)
-    !infile = trim(path) // "flrw.in"
+    infile = trim(path) // "flrw.in"
     !infile = 'flrw.in'
     !infile = trim(infile)
-    !print*, "Phantom path is: ", path 
-    !print*, "Infile is: ", infile
+    print*, "Phantom path is: ", path 
+    print*, "Infile is: ", infile
     ! Use system call to copy phantom files to simulation directory
     ! This is a digusting temporary fix
     !call SYSTEM('cp ~/phantomET/phantom/test/flrw* ./')
@@ -43,7 +44,10 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     !call evol_step(infile,logfile,evfile,dumpfile)
     !print*, "Calling die!!"
     !call die
+    call init_et2phantom(infile)
     call CCTK_INFO("Setting up metric grid")
+    ! Ideally this should be put in the einsteintk_wrapper as well
+    ! Might as well pass these values in init_et2phantom
     call init_etgrid(cctk_gsh(1),cctk_gsh(2),cctk_gsh(3), & 
     cctk_delta_space(1), cctk_delta_space(2), cctk_delta_space(3), &
     cctk_origin_space(1),cctk_origin_space(2), cctk_origin_space(3))

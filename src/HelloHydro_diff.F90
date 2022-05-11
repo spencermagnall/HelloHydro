@@ -44,8 +44,8 @@ subroutine central_finite(CCTK_ARGUMENTS,i,j,k)
 
     ! gxx 
     gxxdx(i,j,k) = (gxx(i+1,j,k) - gxx(i-1,j,k))/(2.*cctk_delta_space(1))
-    print*, "gxx values: ", gxx(i+1,j,k), gxx(i-1,j,k), gxxdx(i,j,k)
-    stop
+    !print*, "gxx values: ", gxx(i+1,j,k), gxx(i-1,j,k), gxxdx(i,j,k)
+    !stop
     gxxdy(i,j,k) = (gxx(i,j+1,k) - gxx(i,j-1,k))/(2.*cctk_delta_space(2))
     gxxdz(i,j,k) = (gxx(i,j,k+1) - gxx(i,j,k-1))/(2.*cctk_delta_space(3))
     ! gxy 

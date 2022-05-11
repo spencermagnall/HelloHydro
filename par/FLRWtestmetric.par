@@ -155,6 +155,7 @@ TmunuBase::stress_energy_at_RHS  = yes
 TmunuBase::timelevels            =  1
 TmunuBase::prolongation_type     = none
 HelloHydro::bound                = none
+HelloHydro::phantom_path         = "/Users/smag0001/phantom/phantomET/test/"
 #GRHydro::riemann_solver            = "HLLE"
 #GRHydro::GRHydro_eos_type          = "Polytype"
 #GRHydro::GRHydro_eos_table         = "2D_Polytrope"

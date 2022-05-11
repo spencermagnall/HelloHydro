@@ -18,8 +18,11 @@ subroutine HelloHydro_metric(CCTK_ARGUMENTS)
                  
                 ! Reconstruct 4 metric from the lapse and shift and the spatial metric 
                 call get_4metric(CCTK_ARGUMENTS,i,j,k)
+                !print*, "Got 4-metric"
                 call get_sqrtg(CCTK_ARGUMENTS,i,j,k)
+                !print*, "got sqrtg"
                 call get_con(CCTK_ARGUMENTS,i,j,k)
+                !print*, "got con"
                 ! get metric derivatives through finite difference
                 ! Which finite difference should we use?
                 ! How does this work with mpi do we use ghost points?
@@ -36,6 +39,7 @@ end subroutine HelloHydro_metric
 
 subroutine get_4metric(CCTK_ARGUMENTS,i,j,k)
     !use HelloHydro_metric_utils, only: get_covshift
+    use metric_utils
     implicit none
     DECLARE_CCTK_ARGUMENTS
     DECLARE_CCTK_FUNCTIONS
@@ -45,8 +49,9 @@ subroutine get_4metric(CCTK_ARGUMENTS,i,j,k)
     real*8 :: betacox,betacoy,betacoz ! covariant component of shift 
 
     ! Get the covariant component of the shift component by lower indices
-    ! Calculate the trace of the shift vector 
-    call get_covshift(i,j,k,betacox,betacoy,betacoz)
+    ! Calculate the trace of the shift vector
+    !print*, "Before covshift!" 
+    call get_covshift(CCTK_ARGUMENTS,i,j,k,betacox,betacoy,betacoz)
     beta2 = betax(i,j,k)*betacox  + betay(i,j,k)*betacoy + betaz(i,j,k)*betacoz
     !print*, "Beta squared: ", beta2
     !print*, "gmunutt: ", gmunutt

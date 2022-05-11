@@ -22,10 +22,20 @@ real sqrtg type=GF tags='Prolongation="None"tensortypealias="scalar" checkpoint=
 
 real spatialderiv type=GF tags='Prolongation="None"tensortypealias="dd_sym" checkpoint="no"'
 {
+    gttdx, gttdy, gttdz
+    gtxdx, gtxdy, gtxdz
+    gtydx, gtydy, gtydz
+    gtzdx, gtzdy, gtzdz
     gxxdx, gxxdy, gxxdz
     gxydx, gxydy, gxydz
     gxzdx, gxzdy, gxzdz
     gyydx, gyydy, gyydz
     gyzdx, gyzdy, gyzdz
     gzzdx, gzzdy, gzzdz 
+}
+real timederiv type=GF tags='Prolongation="None"tensortypealias="dd_sym" checkpoint="no"'
+{
+    gttdt, gtxdt,gtydt, gtzdt
+    gxxdt, gxydt,gxzdt, 
+    gyydt, gyzdt, gzzdt
 }
