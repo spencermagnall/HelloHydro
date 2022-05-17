@@ -25,6 +25,13 @@ schedule HelloHydro_Tmunu in AddToTmunu
     
 }"Add the primative variable contributions to the stress energy tensor"
 
+schedule HelloHydro_metric_init in HydroBase_Initial before HelloHydro_init after FLRW_NoPerturb
+{
+  WRITES: gmunu, gmunucon,sqrtg
+  SYNC: gmunu, gmunucon, sqrtg
+  LANG: Fortran
+}"Get the 4metric to pass to phantom initialy"
+
 schedule HelloHydro_init in HydroBase_Initial after FLRW_NoPerturb
 {
     LANG: Fortran 
@@ -40,7 +47,7 @@ schedule HelloHydro_metric in HydroBase_RHS before HelloHydro
 schedule HelloHydro_diff in HydroBase_RHS before HelloHydro
 {
     LANG: Fortran 
-}"Calculate the spatial derivaties with finite diff" \
+}"Calculate the spatial derivaties with finite diff" 
 
 schedule HelloHydro_metricderiv in HydroBase_RHS before HelloHydro
 {
@@ -48,11 +55,11 @@ schedule HelloHydro_metricderiv in HydroBase_RHS before HelloHydro
     #SYNC: spatialderiv
 }"Calculate the spatial derivatives of the spatial metric" 
 
-schedule HelloHydro_metric_global in HydroBase_RHS before HelloHydro after HelloHydro_metric
-{
-    LANG: Fortran
-   
-} "Pass the global array of metric quantities (gmunu, gmunucon, sqrtg, etc.)to phantom"
+#schedule HelloHydro_metric_global in HydroBase_RHS before HelloHydro after HelloHydro_metric
+#{
+#    LANG: Fortran
+#   
+#} "Pass the global array of metric quantities (gmunu, gmunucon, sqrtg, etc.)to phantom"
 
 
 # HelloHydro's variable storage

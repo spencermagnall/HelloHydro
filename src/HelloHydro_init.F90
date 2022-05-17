@@ -9,6 +9,7 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     !use evolve,          only:evol_init, evol_step
     use einsteintk_wrapper
     use einsteintk_utils
+    use metric_utils
     implicit none
     character(len=500) :: infile,logfile,evfile,dumpfile,path
     integer :: i,j,k,pathstringlength
@@ -44,13 +45,16 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     !call evol_step(infile,logfile,evfile,dumpfile)
     !print*, "Calling die!!"
     !call die
-    call init_et2phantom(infile)
-    call CCTK_INFO("Setting up metric grid")
-    ! Ideally this should be put in the einsteintk_wrapper as well
-    ! Might as well pass these values in init_et2phantom
-    call init_etgrid(cctk_gsh(1),cctk_gsh(2),cctk_gsh(3), & 
+    call CCTK_INFO("Setting up metric grid in phantom")
+    call init_et2phantomgrid(cctk_gsh(1),cctk_gsh(2),cctk_gsh(3), & 
     cctk_delta_space(1), cctk_delta_space(2), cctk_delta_space(3), &
     cctk_origin_space(1),cctk_origin_space(2), cctk_origin_space(3))
+    
+    call CCTK_INFO("Passing the metric from ET to phantom")
+    call HelloHydro_metric_global(CCTK_ARGUMENTS)
+    call print_etgrid
+    call CCTK_INFO("Initialising phantom and starting run")
+    call init_et2phantom(infile)
 
 
     call CCTK_INFO("Setting pressure from initial density")
