@@ -45,7 +45,11 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     !call evol_step(infile,logfile,evfile,dumpfile)
     !print*, "Calling die!!"
     !call die
+    ! print*, "cctk_bbox: ", cctk_bbox 
+    ! print*, "cctk_nghostzones: ", cctk_nghostzones
+    ! stop 
     call CCTK_INFO("Setting up metric grid in phantom")
+    !print*, "Boundary size: ", boundary_size_x_lower
     call init_et2phantomgrid(cctk_gsh(1),cctk_gsh(2),cctk_gsh(3), & 
     cctk_delta_space(1), cctk_delta_space(2), cctk_delta_space(3), &
     cctk_origin_space(1),cctk_origin_space(2), cctk_origin_space(3))
@@ -56,18 +60,20 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     call CCTK_INFO("Initialising phantom and starting run")
     call init_et2phantom(infile)
 
+    call Tmunu_init(CCTK_ARGUMENTS)
+    print*,"Tmunu ET values are: ", eTtt(6,6,6), eTxx(6,6,6), eTyy(6,6,6), eTzz(6,6,6)  
+    
+    ! call CCTK_INFO("Setting pressure from initial density")
+    !     ! Setup pressure from density using a polytrope
+    ! do k=1, cctk_lsh(3)
+    !     do j=1, cctk_lsh(2)
+    !         do i=1, cctk_lsh(1)
 
-    call CCTK_INFO("Setting pressure from initial density")
-        ! Setup pressure from density using a polytrope
-    do k=1, cctk_lsh(3)
-        do j=1, cctk_lsh(2)
-            do i=1, cctk_lsh(1)
+    !             press(i,j,k) = poly_k * (rho(i,j,k)**poly_gamma)
 
-                press(i,j,k) = poly_k * (rho(i,j,k)**poly_gamma)
-
-            enddo 
-        enddo 
-    enddo 
+    !         enddo 
+    !     enddo 
+    ! enddo 
 
 end subroutine HelloHydro_init
 
@@ -97,4 +103,48 @@ subroutine calc_press(CCTK_ARGUMENTS)
 
 
 
-end subroutine calc_press 
+end subroutine calc_press
+
+subroutine Tmunu_init(CCTK_ARGUMENTS)
+    !use einsteintk_wrapper
+    use einsteintk_utils, only: tmunugrid
+    use metric_utils
+    implicit none
+    integer :: i,j,k
+    DECLARE_CCTK_ARGUMENTS
+    DECLARE_CCTK_FUNCTIONS
+    DECLARE_CCTK_PARAMETERS
+    
+    call CCTK_INFO("Getting initial stress energy tensor from phantom grid!")
+    print*, "tmunugrid 0,0 ", tmunugrid(1,1,6:8,6:8,6:8)
+    ! Add stress energy contribution to TmunuBase 
+    do k=1, cctk_lsh(3)
+        do j=1, cctk_lsh(2)
+            do i=1, cctk_lsh(1)
+                
+                ! I really hate the way ET splits up its variables 
+                ! This is super confusing using zero based indexing in
+                ! Phantom but not in ET
+                ! I Need to think of a better way to do this 
+                ! As I should not directly be setting the Tmunu
+                ! Scalar part of Tmunu               
+                eTtt(i,j,k) = tmunugrid(1,1,i,j,k)
+               
+                ! Vector part of Tmunu
+                eTtx(i,j,k) =  tmunugrid(1,2,i,j,k) 
+                eTty(i,j,k) =  tmunugrid(1,3,i,j,k)
+                eTtz(i,j,k) =  tmunugrid(1,4,i,j,k) 
+                ! Tensor part ov Tmunu
+                eTxx(i,j,k) =  tmunugrid(2,2,i,j,k)
+                eTxy(i,j,k) =  tmunugrid(2,3,i,j,k)
+                eTxz(i,j,k) =  tmunugrid(2,4,i,j,k)
+                eTyy(i,j,k) =  tmunugrid(3,3,i,j,k)
+                eTyz(i,j,k) =  tmunugrid(3,4,i,j,k)
+                eTzz(i,j,k) =  tmunugrid(4,4,i,j,k)
+
+
+
+            enddo 
+        enddo 
+    enddo 
+end subroutine Tmunu_init

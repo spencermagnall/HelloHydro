@@ -20,3 +20,9 @@ EXTENDS KEYWORD evolution_method ""
 {
     "HelloHydro" :: "Use HelloHydro to evolve the hydro variables"
 }
+
+#shares: CoordBase
+#
+#USES CCTK_INT boundary_size_x_lower
+#USES CCTK_INT boudnary_size_y_lower
+#USES CCTK_INT boundary_size_z_lower
