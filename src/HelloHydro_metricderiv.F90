@@ -96,7 +96,7 @@ subroutine HelloHydro_metricderiv(CCTK_ARGUMENTS)
     enddo
     print*, "Metric time derivatives are : ", gttdt(2,2,2), gtxdt(2,2,2), gtydt(2,2,2), gtzdt(2,2,2), gxxdt(2,2,2),gxydt(2,2,2),gxzdt(2,2,2)
     print*, gyydt(2,2,2), gyzdt(2,2,2), gzzdt(2,2,2)
-    stop
+    !stop
 end subroutine HelloHydro_metricderiv
 
 subroutine calculate_dtshift_term(CCTK_ARGUMENTS,i,j,k,dtshift_term)

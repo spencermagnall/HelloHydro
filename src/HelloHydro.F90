@@ -4,6 +4,9 @@
 #include "cctk_Parameters.h"
 
 subroutine HelloHydro(CCTK_ARGUMENTS)
+    use einsteintk_wrapper
+    !use einsteintk_utils
+    use metric_utils
     implicit none
     DECLARE_CCTK_ARGUMENTS
     DECLARE_CCTK_FUNCTIONS
@@ -12,50 +15,57 @@ subroutine HelloHydro(CCTK_ARGUMENTS)
     CCTK_REAL :: hub  
     CCTK_REAL :: PI, rho1, rho2, rho3
     integer   :: i,j,k
-    logical :: INIT = .TRUE. 
+    logical :: INIT = .TRUE.
+    character(len=500) :: infile 
 
     !if (INIT .eqv. .TRUE.) then 
     !    rho = 13.29
     !    INIT = .FALSE.
     !endif
-    PI = 4.D0*DATAN(1.D0)
-    print*, rho(1,1,1)
-    rho1 = rho(1,1,1)
-    rho2 = rho_p(1,1,1)
-    rho3 = rho_p_p(1,1,1)
+    ! PI = 4.D0*DATAN(1.D0)
+    ! print*, rho(1,1,1)
+    ! rho1 = rho(1,1,1)
+    ! rho2 = rho_p(1,1,1)
+    ! rho3 = rho_p_p(1,1,1)
     !print*, "eTtt = ", eTtt
     !allocate(hub(size(rho),size(rho),size(rho)))
     ! Hubble parameter, comes from friedman     equation for dust and k = 0  
-    print*, "rho values are: ", rho1,rho2,rho3
-    ! Get the hubble parameter
-    call get_hub(CCTK_ARGUMENTS,hub) 
+    ! print*, "rho values are: ", rho1,rho2,rho3
+    ! ! Get the hubble parameter
+    ! call get_hub(CCTK_ARGUMENTS,hub) 
     
-    print *, "Hub valvue is: ", hub
-    !call CCTK_OutputVar(rho1)
-    call CCTK_INFO("Running Hello Hydro")
+    ! print *, "Hub valvue is: ", hub
+    ! !call CCTK_OutputVar(rho1)
+    ! call CCTK_INFO("Running Hello Hydro")
     !CCTK_REAL :: rho,press,eps,vel[3]
     ! One liner version of Phantom
-    do k=1, cctk_lsh(3)
-        do j=1, cctk_lsh(2)
-            do i=1, cctk_lsh(1)
+    ! do k=1, cctk_lsh(3)
+    !     do j=1, cctk_lsh(2)
+    !         do i=1, cctk_lsh(1)
 
-                    ! rho_p is rho at t rho is rho at t+dt 
-                    rho(i,j,k) = rho_p(i,j,k) - 3*hub*cctk_delta_time*rho_p(i,j,k)
+    !                 ! rho_p is rho at t rho is rho at t+dt 
+    !                 rho(i,j,k) = rho_p(i,j,k) - 3*hub*cctk_delta_time*rho_p(i,j,k)
 
 
-            enddo 
-        enddo 
-    enddo 
+    !         enddo 
+    !     enddo 
+    ! enddo 
     !rho = 13.29
-    !call CCTK_INFO(rho)
+    call CCTK_INFO("Sending metric to phantom")
+    call HelloHydro_metric_global(CCTK_ARGUMENTS)
+    call CCTK_INFO("Calling phantom")
     !Phantom stuff here 
-    ! Call evol_step
     ! What needs to go into evol_step 
     ! time so that phantom knows when to dump
     ! dt so that particles can be stepped properly
     ! Which dt do we use? i.e does it need to be calculated in a seperate    phantom subroutine and passed to ET
     ! Do we need dtext?, dtnew? What do this variables even do?
     ! dtnew is the new timestep for the next itteration
+    infile = 'flrw.in'
+    !Call evol_step(infile)
+    print*, "Time in einstein toolkit is: ", cctk_time
+    call step_et2phantom(infile, cctk_delta_time)
+    
 end subroutine HelloHydro
 
 subroutine get_hub(CCTK_ARGUMENTS,hub)

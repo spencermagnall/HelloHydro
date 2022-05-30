@@ -38,7 +38,7 @@ schedule HelloHydro_init in HydroBase_Initial after FLRW_NoPerturb
 
 }"Set pressure from density"
 
-schedule HelloHydro_setboundary_Tmunu in HydroBase_Initial after HelloHydro_init
+schedule HelloHydro_setboundary_Tmunu in AddToTmunu after HelloHydro_Tmunu
 {
     LANG: Fortran 
 }"Copy stress energy tensor to ghost zones"

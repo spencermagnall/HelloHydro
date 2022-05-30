@@ -31,14 +31,14 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     ! This is required because CCTK KEYWORDS and STRINGS are passed as c pointers
     ! TODO Catch error for path longer than string length 
     call CCTK_FortranString(pathstringlength,phantom_path,path)
-    infile = trim(path) // "flrw.in"
-    !infile = 'flrw.in'
+    !infile = trim(path) // "flrw.in"
+    infile = 'flrw.in'
     !infile = trim(infile)
     print*, "Phantom path is: ", path 
     print*, "Infile is: ", infile
     ! Use system call to copy phantom files to simulation directory
     ! This is a digusting temporary fix
-    !call SYSTEM('cp ~/phantomET/phantom/test/flrw* ./')
+    call SYSTEM('cp ~/phantom/phantomET/test/flrw* ./')
     !call set_io_unit_numbers
     !call startrun(infile,logfile,evfile,dumpfile)
     !call evol_init(infile,logfile,evfile,dumpfile)
@@ -58,10 +58,12 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     call HelloHydro_metric_global(CCTK_ARGUMENTS)
     call print_etgrid
     call CCTK_INFO("Initialising phantom and starting run")
-    call init_et2phantom(infile)
+    ! When calling phantom we also want to pass the dt
+    ! of einstein toolkit as our maximun sph timestep
+    call init_et2phantom(infile,CCTK_DELTA_TIME)
 
-    call Tmunu_init(CCTK_ARGUMENTS)
-    print*,"Tmunu ET values are: ", eTtt(6,6,6), eTxx(6,6,6), eTyy(6,6,6), eTzz(6,6,6)  
+    !call Tmunu_init(CCTK_ARGUMENTS)
+    !print*,"Tmunu ET values are: ", eTtt(6,6,6), eTxx(6,6,6), eTyy(6,6,6), eTzz(6,6,6)  
     
     ! call CCTK_INFO("Setting pressure from initial density")
     !     ! Setup pressure from density using a polytrope

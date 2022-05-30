@@ -92,5 +92,5 @@ subroutine HelloHydro_setboundary_Tmunu(CCTK_ARGUMENTS)
         enddo 
     enddo  
     print*, "eTtt bounds: ", eTtt(1:3,1:3,1:3)
-    stop 
+    !stop 
 end subroutine HelloHydro_setboundary_Tmunu
