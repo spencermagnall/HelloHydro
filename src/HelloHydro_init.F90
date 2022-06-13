@@ -65,17 +65,18 @@ subroutine HelloHydro_init(CCTK_ARGUMENTS)
     !call Tmunu_init(CCTK_ARGUMENTS)
     !print*,"Tmunu ET values are: ", eTtt(6,6,6), eTxx(6,6,6), eTyy(6,6,6), eTzz(6,6,6)  
     
-    ! call CCTK_INFO("Setting pressure from initial density")
-    !     ! Setup pressure from density using a polytrope
-    ! do k=1, cctk_lsh(3)
-    !     do j=1, cctk_lsh(2)
-    !         do i=1, cctk_lsh(1)
+    call CCTK_INFO("Setting pressure from initial density")
+        ! Setup pressure from density using a polytrope
+    do k=1, cctk_lsh(3)
+        do j=1, cctk_lsh(2)
+            do i=1, cctk_lsh(1)
 
-    !             press(i,j,k) = poly_k * (rho(i,j,k)**poly_gamma)
+                rho(i,j,k) = 0.                
+                !press(i,j,k) = poly_k * (rho(i,j,k)**poly_gamma)
 
-    !         enddo 
-    !     enddo 
-    ! enddo 
+            enddo 
+        enddo 
+    enddo 
 
 end subroutine HelloHydro_init
 

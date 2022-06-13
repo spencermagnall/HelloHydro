@@ -78,13 +78,14 @@ Carpet::prolongation_order_time  = 2
 ActiveThorns = "Time MoL StaticConformal NaNChecker SymBase"
 ActiveThorns = "Constants LocalReduce aeilocalinterp LoopControl"
 
-Cactus::terminate           = "time"
-Cactus::cctk_initial_time   = 0.18951066686763596
-Cactus::cctk_final_time     = 4.2426356668676215     # z~1
-time::dtfac                 = 0.1
+#Cactus::terminate           = "iteration"
+Cactus::cctk_initial_time   = 0.18951066686763593
+Cactus::cctk_final_time     = 2.998885666867626 
+#Cactus::cctk_itlast         = 3 
+time::dtfac                 = 0.5
 
-MoL::ODE_Method             = "euler"
-MoL::MoL_Intermediate_Steps = 1
+MoL::ODE_Method             = "rk4"
+MoL::MoL_Intermediate_Steps = 4
 MoL::MoL_Num_Scratch_Levels = 1
 
 NaNChecker::check_every     = 1
@@ -130,7 +131,7 @@ ML_BSSN::ML_dtshift_bound    = "none"
 ML_ADMConstraints::timelevels = 3
 
 ADMMacros::spatial_order       = 4
-#GRHydro::sources_spatial_order = 4
+GRHydro::sources_spatial_order = 4
 
 ADMBase::metric_type             = "physical"
 ADMBase::evolution_method        = "ML_BSSN"
@@ -144,9 +145,9 @@ ADMBase::dtshift_evolution_method= "ML_BSSN"
 # hydrodynamics parameters
 ########################################
 
-ActiveThorns = "HydroBase Tmunubase HelloHydro EOS_Omni"
+ActiveThorns = "HydroBase Tmunubase GRHydro EOS_Omni"
 
-HydroBase::evolution_method      = "None"
+HydroBase::evolution_method      = "GRHydro"
 HydroBase::timelevels            = 3
 
 TmunuBase::stress_energy_storage = yes
@@ -154,14 +155,15 @@ TmunuBase::stress_energy_storage = yes
 TmunuBase::stress_energy_at_RHS  = yes
 TmunuBase::timelevels            =  1
 TmunuBase::prolongation_type     = none
-HelloHydro::bound                = none
-#GRHydro::riemann_solver            = "HLLE"
-#GRHydro::GRHydro_eos_type          = "Polytype"
-#GRHydro::GRHydro_eos_table         = "2D_Polytrope"
-#GRHydro::recon_method              = "ppm"
-#GRHydro::GRHydro_stencil           = 3
-#GRHydro::bound                     = "none"
-#GRHydro::rho_abs_min               = 1.e-30
+#HelloHydro::bound                = none
+#HelloHydro::phantom_path         = "/Users/smag0001/phantom/phantomET/test/"
+GRHydro::riemann_solver            = "HLLE"
+GRHydro::GRHydro_eos_type          = "Polytype"
+GRHydro::GRHydro_eos_table         = "2D_Polytrope"
+GRHydro::recon_method              = "ppm"
+GRHydro::GRHydro_stencil           = 3
+GRHydro::bound                     = "none"
+GRHydro::rho_abs_min               = 1.e-30
 
 EOS_Omni::poly_k		   = 1.e-20
 EOS_Omni::poly_gamma		   = 2.0
@@ -211,7 +213,7 @@ ActiveThorns = "CarpetIOASCII CarpetIOScalar CarpetIOHDF5 CarpetIOBasic"
 
 IOBasic::outInfo_criterion	= "iteration"
 IOBasic::outInfo_every      = 1
-IOBasic::outInfo_vars       = "HydroBase::rho ADMBase::lapse"
+IOBasic::outInfo_vars       = "HydroBase::rho ADMBase::lapse ADMBase::gxx TmunuBase::eTtt TmunuBase::eTxx"
 
 IO::out_dir      = $parfile
 

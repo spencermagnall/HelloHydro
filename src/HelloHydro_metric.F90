@@ -156,11 +156,14 @@ subroutine get_sqrtg(CCTK_ARGUMENTS,i,j,k)
     ! TODO What about when g is negative as for the flrw metric? how do we handle that case 
     ! We want sqrt of -det not sqrt of det
     !Get local copy of gmunu
+    !print*, "gmunu before: ", gmunu
     call get_local_gmunu(CCTK_ARGUMENTS,i,j,k,gmunu)
+    !print*, "gmunu after: ", gmunu
     ! Get det
     call get_det(gmunu,det)
     !print*, "det: ",det
     sqrtg(i,j,k) = sqrt(-det)
+    !print*, "sqrtg: ", sqrt(-det)
 end subroutine get_sqrtg
 
 subroutine get_det(gmunu,det)

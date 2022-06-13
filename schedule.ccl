@@ -12,10 +12,10 @@ schedule HelloHydro in HydroBase_RHS
     WRITES: HydroBase::rho(everywhere)
 } "Generate new density"
 
-schedule calc_press in HydroBase_RHS after HelloHydro
-{
-    LANG: Fortran 
-} "Calculate new pressure from evolved density"
+#schedule calc_press in HydroBase_RHS after HelloHydro
+#{
+#    LANG: Fortran 
+#} "Calculate new pressure from evolved density"
 
 schedule HelloHydro_Tmunu in AddToTmunu  
 {

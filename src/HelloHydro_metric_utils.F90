@@ -224,11 +224,13 @@ module metric_utils
         enddo 
         
         ! This is to test that we are actually initialising some values
-        print*, "gcovgrid: ", gcovgrid(1,1,1, 1, 1)
+        print*, "gcovgrid: ", gcovgrid(:,:,1, 1, 1)
         print*, "gmunutt: ", gmunutt(1,1,1)
         print*, "Local grid sizes are : ", cctk_lsh(1), cctk_lsh(2), cctk_lsh(3)
         print*, "Global grid size is: ", cctk_gsh(1), cctk_gsh(2), cctk_gsh(3)
-        !stop 
+        print*, "sqrtggrid: ", sqrtggrid(1,1,1)
+        !stop
+
     end subroutine HelloHydro_metric_global
 
 

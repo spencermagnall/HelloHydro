@@ -17,8 +17,8 @@ subroutine HelloHydro_Tmunu(CCTK_ARGUMENTS)
     integer :: i,j,k
     call CCTK_INFO("Calculating components of stress energy tensor from primative variables")
     
-    print*, "Value of Stress energy tensor before is: ", eTtt(6,6,6)
-    print*, "tmunugrid: ", tmunugrid(1,1,6,6,6)
+    !print*, "Value of Stress energy tensor before is: ", eTtt(6,6,6)
+    !print*, "tmunugrid: ", tmunugrid(1,1,6,6,6)
     do k=1, cctk_lsh(3)
         do j=1, cctk_lsh(2)
             do i=1, cctk_lsh(1)
@@ -30,26 +30,25 @@ subroutine HelloHydro_Tmunu(CCTK_ARGUMENTS)
                 ! I Need to think of a better way to do this 
                 ! As I should not directly be setting the Tmunu
                 ! Scalar part of Tmunu               
-                eTtt(i,j,k) = tmunugrid(1,1,i,j,k)
+                eTtt(i,j,k) = tmunugrid(0,0,i,j,k)
                
                 ! Vector part of Tmunu
-                eTtx(i,j,k) =  tmunugrid(1,2,i,j,k) 
-                eTty(i,j,k) =  tmunugrid(1,3,i,j,k)
-                eTtz(i,j,k) =  tmunugrid(1,4,i,j,k) 
+                eTtx(i,j,k) = tmunugrid(0,1,i,j,k) 
+                eTty(i,j,k) = tmunugrid(0,2,i,j,k)
+                eTtz(i,j,k) = tmunugrid(0,3,i,j,k) 
                 ! Tensor part ov Tmunu
-                eTxx(i,j,k) =  tmunugrid(2,2,i,j,k)
-                eTxy(i,j,k) =  tmunugrid(2,3,i,j,k)
-                eTxz(i,j,k) =  tmunugrid(2,4,i,j,k)
-                eTyy(i,j,k) =  tmunugrid(3,3,i,j,k)
-                eTyz(i,j,k) =  tmunugrid(3,4,i,j,k)
-                eTzz(i,j,k) =  tmunugrid(4,4,i,j,k)
+                eTxx(i,j,k) = tmunugrid(1,1,i,j,k)
+                eTxy(i,j,k) = tmunugrid(1,2,i,j,k)
+                eTxz(i,j,k) = tmunugrid(1,3,i,j,k)
+                eTyy(i,j,k) = tmunugrid(2,2,i,j,k)
+                eTyz(i,j,k) = tmunugrid(2,3,i,j,k)
+                eTzz(i,j,k) = tmunugrid(3,3,i,j,k)
 
             enddo 
         enddo 
     enddo 
     !print*, "Value of Stress energy tensor is: ", eTtt(1,1,1)
-    print*,"Stress energy tensor: ", eTtt(6,6,6), eTtx(6,6,6), eTty(1,1,    1), eTtz(1,1,1), eTxx(1,1,1), eTyy(1,1,1), eTzz(1,1,1), &
-         eTxy(1,1,1), eTxz(1,1,1), eTyz(1,1,1)
+    print*,"Stress energy tensor: ", eTtt(6,6,6), eTxx(6,6,6), eTyy(6,6,6), eTzz(6,6,6)
     print*, "values of metric are: ", gxx(1,1,1), gyy(1,1,1), gzz(1,1,1)
     
     !stop 
